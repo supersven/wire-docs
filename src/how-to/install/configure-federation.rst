@@ -24,7 +24,7 @@ The steps needed to configure federation are as follows and they will be detaile
     * client certificates
     * a selection of CA certificates you trust when interacting with other backends
 
-* Configure helm charts : federator and ingress subcharts
+* Configure helm charts : federator and ingress and webapp subcharts
 * Test that your configurations work as expected.
 
 .. _choose-backend-domain:
@@ -263,8 +263,8 @@ The backends you want to federate with should add your (or Let's Encrypt's) CA
 to their store, so you should give them your CA certificate, or tell them to use
 the appropriate Let's Encrypt root certificate.
 
-Configure helm charts: federator and ingress subcharts
--------------------------------------------------------
+Configure helm charts: federator and ingress and webapp subcharts
+-----------------------------------------------------------------
 
 Set your chosen backend domain
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -314,6 +314,18 @@ in :ref:`dns-configure-federation` above
     config:
       dns:
         federator: federator.wire.example.org # set this to your domain!
+
+Configure the webapp to enable federation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: yaml
+
+    # override values for wire-server
+    # (e.g. under ./helm_vars/wire-server/values.yaml)
+    webapp:
+      envVars:
+        FEATURE_ENABLE_DOMAIN_DISCOVERY: "true"
+        FEATURE_ENABLE_FEDERATION: "true"
 
 
 Configure the validation depth when handling client certificates
